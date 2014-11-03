@@ -1,0 +1,80 @@
+diff --git a/libs/utils/ResourceTypes.cpp b/libs/utils/ResourceTypes.cpp
+index 8345cc3..7cc18ac 100644
+--- a/libs/utils/ResourceTypes.cpp
++++ b/libs/utils/ResourceTypes.cpp
+@@ -2596,6 +2596,15 @@ bool ResTable::expandResourceRef(const uint16_t* refStr, size_t refLen,
+         }
+         *outPackage = *defPackage;
+     }
++    /* Begin HACK */
++    if ((p[0] == '0') &&(p[1] == 'x'))
++    {
++    	*outType = String16("RawResId");
++        *outName = String16(p, end-p);
++        return true;
++    }
++    /* End Hack */
++
+     if (typeEnd) {
+         *outType = String16(p, typeEnd-p);
+         p = typeEnd+1;
+@@ -2959,6 +2968,14 @@ bool ResTable::stringToValue(Res_value* outValue, String16* outString,
+                 }
+                 return false;
+             }
++            /* Begin HACK */
++            if (type == String16("RawResId"))
++            {
++            	stringToInt(name, name.size(), outValue);
++            	outValue->dataType = outValue->TYPE_REFERENCE;
++            	return true;
++            }
++            /* End HACK */
+ 
+             uint32_t specFlags = 0;
+             uint32_t rid = identifierForName(name.string(), name.size(), type.string(),
+@@ -3160,10 +3177,18 @@ bool ResTable::stringToValue(Res_value* outValue, String16* outString,
+ 
+     if (stringToInt(s, len, outValue)) {
+         if ((attrType&ResTable_map::TYPE_INTEGER) == 0) {
++        	/* Begin HACK */
++        	if ( (attrType&ResTable_map::TYPE_FLAGS) ||
++        		 (attrType&ResTable_map::TYPE_ENUM) )
++        	{
++        		return true;
++        	}
++        	/* End HACK */
++
+             // If this type does not allow integers, but does allow floats,
+             // fall through on this error case because the float type should
+             // be able to accept any integer value.
+-            if (!canStringCoerce && (attrType&ResTable_map::TYPE_FLOAT) == 0) {
++            if (!canStringCoerce && (attrType&ResTable_map::TYPE_FLOAT) == 0){
+                 if (accessor != NULL) {
+                     accessor->reportError(accessorCookie, "Integer types not allowed");
+                 }
+@@ -3555,7 +3580,10 @@ size_t ResTable::getTableCount() const
+ 
+ const ResStringPool* ResTable::getTableStringBlock(size_t index) const
+ {
+-    return &mHeaders[index]->values;
++	if (index < mHeaders.size())
++		return &mHeaders[index]->values;
++	else
++		return 0;
+ }
+ 
+ void* ResTable::getTableCookie(size_t index) const
+diff --git a/tools/aapt/Android.mk b/tools/aapt/Android.mk
+index 094b7db..248e663 100644
+--- a/tools/aapt/Android.mk
++++ b/tools/aapt/Android.mk
+@@ -25,7 +25,7 @@ LOCAL_SRC_FILES := \
+     ZipFile.cpp
+ 
+ 
+-LOCAL_CFLAGS += -Wno-format-y2k
++LOCAL_CFLAGS += -Wno-format-y2k -g
+ 
+ LOCAL_C_INCLUDES += external/expat/lib
+ LOCAL_C_INCLUDES += external/libpng

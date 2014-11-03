@@ -1,0 +1,13 @@
+diff --git a/apktool-lib/src/main/java/brut/androlib/mod/SmaliMod.java b/apktool-lib/src/main/java/brut/androlib/mod/SmaliMod.java
+index 8927026..7471777 100644
+--- a/apktool-lib/src/main/java/brut/androlib/mod/SmaliMod.java
++++ b/apktool-lib/src/main/java/brut/androlib/mod/SmaliMod.java
+@@ -52,6 +52,8 @@ public class SmaliMod {
+             tokens = new CommonTokenStream((TokenSource)lexer);
+         }
+ 
++        ((smaliFlexLexer)lexer).setSourceFile(new File(name));
++        
+         if (printTokens) {
+             tokens.getTokens();
+ 

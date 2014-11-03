@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      android:versionCode="1"
+      android:versionName="1.0" package="com.rx201.apkmon_demo">
+    <uses-sdk android:minSdkVersion="8"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.SEND_SMS"></uses-permission>
+    <uses-permission android:name="android.permission.RECEIVE_SMS"></uses-permission>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.CALL_PHONE"></uses-permission>
+    <uses-permission android:name="android.permission.READ_CONTACTS"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
+
+    <application android:icon="@drawable/icon" android:label="@string/app_name" android:debuggable="true" android:name="com.rx201.apkmon.APIHook">
+        <activity android:label="@string/app_name" android:name=".ApkMonitorActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <receiver android:name="com.rx201.apkmon_demo.SMSReceiver">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_RECEIVED"></action>
+            </intent-filter>
+        </receiver>
+        <service android:name="com.rx201.apkmon_demo.MyService" android:process="android.process.myservice">
+            <intent-filter>
+                <action android:name="com.rx201.apkmon.demo.IMyService"></action>
+            </intent-filter>
+        </service>
+        <activity android:process=":APIHookDialog" android:theme="@android:style/Theme.Translucent.NoTitleBar" android:name="com.rx201.apkmon.APIHookDialogActivity"></activity>
+
+    </application>
+</manifest>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello">Hello World, ApkMonitorActivity!</string>
+    <string name="app_name">ApkMonitor</string>
+    <string name="btntestText">Test!</string>
+    <string name="btnSendSmsText">Send SMS</string>
+    <string name="btnGetPhoneInfoText">Get Phone Information</string>
+    <string name="btnInternetText">Connect to Internet</string>
+    <string name="btnDialTest">Dial</string>
+    <string name="btnReadCotactText">Read Contact List</string>
+    <string name="btnServiceText">Start Service</string>
+    <string name="btnExecveText">Execute Binary</string>
+    <string name="btnGetLocationText">Get Location</string>
+</resources>

@@ -1,0 +1,14 @@
+diff --git a/util/src/main/java/org/jf/util/IndentingWriter.java b/util/src/main/java/org/jf/util/IndentingWriter.java
+index 439f992..b658947 100644
+--- a/util/src/main/java/org/jf/util/IndentingWriter.java
++++ b/util/src/main/java/org/jf/util/IndentingWriter.java
+@@ -170,6 +170,9 @@ public class IndentingWriter extends Writer {
+         int bufferIndex = 0;
+         boolean negative = value < 0;
+ 
++        if (negative)
++        	value = -value;
++        
+         do {
+             int digit = value % 10;
+             buffer[bufferIndex++] = (char)(digit + '0');
