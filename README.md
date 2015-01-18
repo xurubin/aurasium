@@ -3,6 +3,8 @@ aurasium
 
 Practical security policy enforcement for Android apps via bytecode rewriting and in-place reference monitor.
 
+Aurasium's code is released under GPLv3.
+
 ### Code Structure
 * ApkMonitor/: The main native and java policy logic, bundled with a demo app.
 * pyAPKRewriter/: The APK patching scripts.
